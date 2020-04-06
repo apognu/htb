@@ -10,6 +10,7 @@ pub struct Machine {
     pub ip: String,
     pub os: String,
     pub rating: String,
+    pub release: Option<String>,
     pub points: u8,
     pub user_owns: u32,
     pub root_owns: u32,

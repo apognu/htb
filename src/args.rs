@@ -114,8 +114,14 @@ pub enum Chat {
     },
 }
 
+const DIFFICULTIES: &[&str] = &["easy", "medium", "hard", "insane"];
+const OSES: &[&str] = &["windows", "linux", "freebsd", "android", "solaris", "other"];
+const FIELDS: &[&str] = &["id", "name", "rating", "release"];
+
 #[derive(Debug, Clap)]
 pub struct MachineListArgs {
+    #[clap(long, name = "DIFFICULTY", possible_values = DIFFICULTIES, help = "Only show machines from this level of difficulty")]
+    pub difficulty: Option<String>,
     #[clap(long, help = "Only show spawned machines")]
     pub spawned: bool,
     #[clap(long, group = "group_active", help = "Only show active machines")]
@@ -134,11 +140,21 @@ pub struct MachineListArgs {
         help = "Only show machines you did not complete"
     )]
     pub unowned: bool,
+    #[clap(long, name="os", possible_values = OSES, help = "Only show machines running a specific operating system")]
+    pub os: Option<String>,
     #[clap(long, help = "Show machines from your to-do list")]
     pub todo: bool,
     #[clap(long, help = "Show machines assigned to you")]
     pub assigned: bool,
-    #[clap(long, name = "NAME")]
+    #[clap(long, short = "x")]
+    pub desc: bool,
+    #[clap(long, short = "s", name = "FIELD", possible_values = FIELDS, help = "Sort the filtered machines according to one field", default_value="id")]
+    pub sort: String,
+    #[clap(
+        long,
+        name = "NAME",
+        help = "Search for machine containing this substring"
+    )]
     pub name: Option<String>,
 }
 

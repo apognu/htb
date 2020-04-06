@@ -1,4 +1,5 @@
 use crate::{api, cli};
+use chrono::prelude::*;
 use colored::*;
 use std::error::Error;
 
@@ -45,15 +46,30 @@ pub async fn show(name: &str) -> Result<(), Box<dyn Error>> {
 
         if let Some(maker2) = details.maker2 {
             println!(
-                "Makers: {} and {}",
-                details.maker.name.dimmed(),
-                maker2.name.dimmed()
+                "Created by {} and {}",
+                details.maker.name.green(),
+                maker2.name.green()
             );
         } else {
-            println!("Maker: {}", details.maker.name.dimmed());
+            println!("Created by {}", details.maker.name.green());
         }
 
-        println!("IP address: {}", machine.ip.dimmed());
+        if let Some(release) = machine.release {
+            if let Ok(release) =
+                NaiveDateTime::parse_from_str(&format!("{} 00:00:00", release), "%Y-%m-%d %H:%M:%S")
+            {
+                println!(
+                    "Released on {}",
+                    release.format("%d %b %Y").to_string().dimmed()
+                );
+            } else {
+                println!("Released on {}", release.dimmed());
+            }
+        } else {
+            println!("{}", "Unreleased".bold().red());
+        }
+
+        println!("IP address: {}", machine.ip.bold());
         println!();
         println!("{}", "First bloods:".bold());
 
