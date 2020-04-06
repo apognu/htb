@@ -17,7 +17,11 @@ Machines can be listed with filters applied to find the find you are looking for
  * `--retired`: display retired machines
  * `--todo`: display the machines that you added to your to-do list
  * `--assigned`: display the machines that are assigned to you
+ * `--difficulty DIFFICULTY`: filter machines by their difficulty level
+ * `--os OS`: filter by operating systems
  * `--name NAME`: display the machines matching the given name
+
+Also, the output can be sorted by `id`, `name`, `rating` or `release` date by providing the `--sort` option. Results can be sorted in descending order by providing the `-x` option.
 
 **Note:** `machines` is aliased to `machine`, `box` and `vm`.
 
@@ -42,10 +46,11 @@ Mirai     | Linux   | 👥 7235  | ＃ 6858  | 10.10.10.48  | ☆ 4.2  | 🞋 20
 ```
 $ htb machines show registry
 Registry
-■■■■■■■■■■■■■■■■■■■■
+■■■■■■■■■■■■■■■■■■■■ ★ 4.5
 Hard 💻 Linux - 🞋 40 - 👥 3657 - ＃ 2968
 
-Maker: thek
+Made by thek
+Released on 19 Oct 2019
 IP address: 10.10.10.159
 
 First bloods:
