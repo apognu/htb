@@ -2,6 +2,8 @@
 
 `htb` is a command-line client to [Hack The Box](https://www.hackthebox.eu).
 
+![Screenshot of htb](https://repository-images.githubusercontent.com/253286330/92358b00-782f-11ea-96cf-e55b6374a079)
+
 ## Machines
 
 ### Search machines

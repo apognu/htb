@@ -3,7 +3,7 @@ name = "htb"
 version = "0.1.0"
 authors = ["Antoine POPINEAU <antoine.popineau@appscho.com>"]
 repository = "https://github.com/apognu/htb"
-licence = "MIT"
+license = "MIT"
 
 edition = "2018"
 
