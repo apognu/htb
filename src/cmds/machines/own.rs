@@ -1,4 +1,7 @@
-use crate::{api, cli};
+use crate::{
+    api::{self, HtbError},
+    cli,
+};
 use std::error::Error;
 
 pub async fn own(name: &str, flag: &str, difficulty: u8) -> Result<(), Box<dyn Error>> {
@@ -9,12 +12,12 @@ pub async fn own(name: &str, flag: &str, difficulty: u8) -> Result<(), Box<dyn E
 
         if status.success == 1 {
             cli::ok(&status.status);
+
+            Ok(())
         } else {
-            cli::error(&status.status);
+            Err(HtbError::boxed(status.status))
         }
     } else {
-        cli::error("No machine was found by that name");
+        Err(HtbError::boxed("No machine was found by that name"))
     }
-
-    Ok(())
 }

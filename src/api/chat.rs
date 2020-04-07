@@ -1,4 +1,4 @@
-use super::util::HtbError;
+use super::util::{HtbError, HtbParser, HtbResponder};
 use serde::{Deserialize, Serialize};
 use std::error::Error;
 
@@ -20,11 +20,12 @@ pub struct Message {
 
 pub async fn list() -> Result<Vec<Conversation>, Box<dyn Error>> {
     let api = super::client()?;
-    let response: Vec<Conversation> = api
+    let response = api
         .post(&super::url("/conversations/list"))
         .send()
-        .await?
-        .json()
+        .await
+        .check()?
+        .from_json()
         .await?;
 
     Ok(response)
@@ -32,11 +33,12 @@ pub async fn list() -> Result<Vec<Conversation>, Box<dyn Error>> {
 
 pub async fn get(id: u64) -> Result<Vec<Message>, Box<dyn Error>> {
     let api = super::client()?;
-    let response: Vec<Message> = api
+    let response = api
         .post(&super::url(&format!("/conversations/load/{}", id)))
         .send()
-        .await?
-        .json()
+        .await
+        .check()?
+        .from_json()
         .await?;
 
     Ok(response)
@@ -59,9 +61,8 @@ pub async fn new(recipients: &[String], message: &str) -> Result<(), Box<dyn Err
     api.post(&super::url("/conversations/new"))
         .json(&body)
         .send()
-        .await?
-        .text()
-        .await?;
+        .await
+        .check()?;
 
     Ok(())
 }
@@ -75,7 +76,8 @@ pub async fn send(id: u64, message: &str) -> Result<(), Box<dyn Error>> {
         .post(&super::url(&format!("/conversations/send/{}", id)))
         .form(&params)
         .send()
-        .await?;
+        .await
+        .check()?;
 
     if response.status().is_success() {
         Ok(())

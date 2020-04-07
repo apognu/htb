@@ -1,4 +1,7 @@
-use crate::{api, args::MachineListArgs, cli};
+use crate::{
+    api::{self, HtbError},
+    args::MachineListArgs,
+};
 use colored::*;
 use prettytable::{format::consts::*, Cell, Row, Table};
 use std::error::Error;
@@ -109,10 +112,10 @@ pub async fn list(args: &MachineListArgs) -> Result<(), Box<dyn Error>> {
     }
 
     if table.len() <= 1 {
-        cli::error("No machine matches your criteria");
+        Err(HtbError::boxed("No machine matches your criteria"))
     } else {
         table.printstd();
-    }
 
-    Ok(())
+        Ok(())
+    }
 }

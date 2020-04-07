@@ -2,18 +2,21 @@ pub mod chat;
 pub mod machines;
 mod util;
 
+pub use self::util::HtbError;
+
 use crate::cli;
 use colored::*;
 use reqwest::{
     header::{self, HeaderMap, HeaderValue},
+    redirect::Policy,
     Client, ClientBuilder,
 };
 use std::{error::Error, fs};
 
 const BASE_URL: &str = "https://www.hackthebox.eu/api";
 
-pub fn client() -> Result<Client, Box<dyn Error>> {
-    let token = match dirs::config_dir() {
+lazy_static! {
+    static ref API_KEY: String = match dirs::config_dir() {
         Some(config) => {
             let path = format!("{}/htb/token", config.display());
 
@@ -32,15 +35,18 @@ pub fn client() -> Result<Client, Box<dyn Error>> {
             "htb config token".bold(),
         )),
     };
+}
 
-    let creds = format!("Bearer {}", token);
+pub fn client() -> Result<Client, Box<dyn Error>> {
+    let creds = format!("Bearer {}", *API_KEY);
 
     let mut headers = HeaderMap::new();
-    headers.insert(header::AUTHORIZATION, HeaderValue::from_str(&creds)?);
+    headers.insert(header::AUTHORIZATION, HeaderValue::from_str(&creds.trim())?);
 
     Ok(ClientBuilder::new()
         .user_agent("htb/1.0.0 (https://github.com/apognu/htb")
         .default_headers(headers)
+        .redirect(Policy::none())
         .build()?)
 }
 

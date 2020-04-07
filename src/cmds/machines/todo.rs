@@ -1,4 +1,7 @@
-use crate::{api, cli};
+use crate::{
+    api::{self, HtbError},
+    cli,
+};
 use colored::*;
 use std::error::Error;
 
@@ -19,9 +22,9 @@ pub async fn toggle(name: &str) -> Result<(), Box<dyn Error>> {
                 machine.name.bold()
             ));
         }
-    } else {
-        cli::error("No machine was found by that name");
-    }
 
-    Ok(())
+        Ok(())
+    } else {
+        Err(HtbError::boxed("No machine was found by that name"))
+    }
 }

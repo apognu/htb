@@ -1,4 +1,4 @@
-use crate::cli;
+use crate::api::HtbError;
 use std::{error::Error, fs};
 
 pub async fn set_token(token: &str) -> Result<(), Box<dyn Error>> {
@@ -9,7 +9,11 @@ pub async fn set_token(token: &str) -> Result<(), Box<dyn Error>> {
             fs::write(format!("{}/token", &path), token)?;
         }
 
-        None => cli::error("Could not create directory under ~/.config/htb"),
+        None => {
+            return Err(box HtbError::new(
+                "Could not create directory under ~/.config/htb",
+            ))
+        }
     }
 
     Ok(())

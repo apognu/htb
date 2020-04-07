@@ -1,4 +1,4 @@
-use super::util::int_or_string;
+use super::util::{int_or_string, HtbParser, HtbResponder};
 use serde::{Deserialize, Serialize};
 use std::{collections::HashMap, error::Error};
 
@@ -77,11 +77,12 @@ pub struct StateResponse {
 
 pub async fn list() -> Result<Vec<Machine>, Box<dyn Error>> {
     let api = super::client()?;
-    let response: Vec<Machine> = api
+    let response = api
         .get(&super::url("/machines/get/all"))
         .send()
-        .await?
-        .json()
+        .await
+        .check()?
+        .from_json()
         .await?;
 
     Ok(response)
@@ -89,11 +90,12 @@ pub async fn list() -> Result<Vec<Machine>, Box<dyn Error>> {
 
 pub async fn get(id: u32) -> Result<MachineDetails, Box<dyn Error>> {
     let api = super::client()?;
-    let response: MachineDetails = api
+    let response = api
         .get(&super::url(&format!("/machines/get/{}", id)))
         .send()
-        .await?
-        .json()
+        .await
+        .check()?
+        .from_json()
         .await?;
 
     Ok(response)
@@ -101,7 +103,7 @@ pub async fn get(id: u32) -> Result<MachineDetails, Box<dyn Error>> {
 
 pub async fn get_by_name(name: &str) -> Result<Option<Machine>, Box<dyn Error>> {
     let machines = list().await?;
-    let machine: Option<Machine> = machines
+    let machine = machines
         .into_iter()
         .find(|m| m.name.to_lowercase() == name.to_lowercase());
 
@@ -113,8 +115,9 @@ pub async fn spawned() -> Result<Vec<u32>, Box<dyn Error>> {
     let response: Vec<Spawned> = api
         .get(&super::url("/machines/spawned"))
         .send()
-        .await?
-        .json()
+        .await
+        .check()?
+        .from_json()
         .await?;
 
     Ok(response.iter().map(|m| m.id).collect())
@@ -125,8 +128,9 @@ pub async fn owns() -> Result<HashMap<u32, (bool, bool)>, Box<dyn Error>> {
     let response: Vec<Owned> = api
         .get(&super::url("/machines/owns"))
         .send()
-        .await?
-        .json()
+        .await
+        .check()?
+        .from_json()
         .await?;
 
     Ok(response
@@ -140,8 +144,9 @@ pub async fn difficulty(id: u32) -> Result<f64, Box<dyn Error>> {
     let response: Vec<Difficulty> = api
         .get(&super::url("/machines/difficulty"))
         .send()
-        .await?
-        .json()
+        .await
+        .check()?
+        .from_json()
         .await?;
 
     if let Some(machine) = response.iter().find(|d| d.id == id) {
@@ -164,8 +169,9 @@ pub async fn todos() -> Result<Vec<u32>, Box<dyn Error>> {
     let response: Vec<Todo> = api
         .get(&super::url("/machines/todo"))
         .send()
-        .await?
-        .json()
+        .await
+        .check()?
+        .from_json()
         .await?;
 
     Ok(response.iter().map(|t| t.id).collect())
@@ -176,8 +182,9 @@ pub async fn assigned() -> Result<Vec<u32>, Box<dyn Error>> {
     let response: Vec<Assigned> = api
         .get(&super::url("/machines/assigned"))
         .send()
-        .await?
-        .json()
+        .await
+        .check()?
+        .from_json()
         .await?;
 
     Ok(response.iter().map(|t| t.id).collect())
@@ -198,12 +205,13 @@ pub async fn own(id: u32, flag: &str, difficulty: u8) -> Result<StateResponse, B
     };
 
     let api = super::client()?;
-    let response: StateResponse = api
+    let response = api
         .post(&super::url("/machines/own"))
         .json(&body)
         .send()
-        .await?
-        .json()
+        .await
+        .check()?
+        .from_json()
         .await?;
 
     Ok(response)
@@ -211,11 +219,12 @@ pub async fn own(id: u32, flag: &str, difficulty: u8) -> Result<StateResponse, B
 
 pub async fn toggle_todo(id: u32) -> Result<Vec<Todo>, Box<dyn Error>> {
     let api = super::client()?;
-    let response: Vec<Todo> = api
+    let response = api
         .post(&super::url(&format!("/machines/todo/update/{}", id)))
         .send()
-        .await?
-        .json()
+        .await
+        .check()?
+        .from_json()
         .await?;
 
     Ok(response)
@@ -223,11 +232,12 @@ pub async fn toggle_todo(id: u32) -> Result<Vec<Todo>, Box<dyn Error>> {
 
 pub async fn reset(id: u32) -> Result<StateResponse, Box<dyn Error>> {
     let api = super::client()?;
-    let response: StateResponse = api
+    let response = api
         .post(&super::url(&format!("/vm/reset/{}", id)))
         .send()
-        .await?
-        .json()
+        .await
+        .check()?
+        .from_json()
         .await?;
 
     Ok(response)
@@ -235,11 +245,12 @@ pub async fn reset(id: u32) -> Result<StateResponse, Box<dyn Error>> {
 
 pub async fn start(id: u32) -> Result<StateResponse, Box<dyn Error>> {
     let api = super::client()?;
-    let response: StateResponse = api
+    let response = api
         .post(&super::url(&format!("/vm/vip/assign/{}", id)))
         .send()
-        .await?
-        .json()
+        .await
+        .check()?
+        .from_json()
         .await?;
 
     Ok(response)
@@ -247,11 +258,12 @@ pub async fn start(id: u32) -> Result<StateResponse, Box<dyn Error>> {
 
 pub async fn stop(id: u32) -> Result<StateResponse, Box<dyn Error>> {
     let api = super::client()?;
-    let response: StateResponse = api
+    let response = api
         .post(&super::url(&format!("/vm/vip/remove/{}", id)))
         .send()
-        .await?
-        .json()
+        .await
+        .check()?
+        .from_json()
         .await?;
 
     Ok(response)

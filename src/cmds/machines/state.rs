@@ -1,4 +1,7 @@
-use crate::{api, cli};
+use crate::{
+    api::{self, HtbError},
+    cli,
+};
 use colored::*;
 use std::error::Error;
 
@@ -14,15 +17,16 @@ pub async fn reset(name: &str) -> Result<(), Box<dyn Error>> {
         let status = api::machines::reset(machine.id).await?;
 
         if status.success == 1 {
-            cli::ok(&format!(" {}", status.status));
+            cli::ok(&status.status);
+            cli::info("It might take some time for the machine to actually reboot");
+
+            Ok(())
         } else {
-            cli::error(&format!(" {}", status.status));
+            Err(HtbError::boxed(status.status))
         }
     } else {
-        cli::error("No machine was found by that name");
+        Err(HtbError::boxed("No machine was found by that name"))
     }
-
-    Ok(())
 }
 
 pub async fn start(name: &str) -> Result<(), Box<dyn Error>> {
@@ -37,15 +41,16 @@ pub async fn start(name: &str) -> Result<(), Box<dyn Error>> {
         let status = api::machines::start(machine.id).await?;
 
         if status.success == 1 {
-            cli::ok(&format!(" {}", status.status));
+            cli::ok(&status.status);
+            cli::info("It might take some time for the machine to be reachable");
+
+            Ok(())
         } else {
-            cli::error(&format!(" {}", status.status));
+            Err(HtbError::boxed(status.status))
         }
     } else {
-        cli::error("No machine was found by that name");
+        Err(HtbError::boxed("No machine was found by that name"))
     }
-
-    Ok(())
 }
 
 pub async fn stop(name: &str) -> Result<(), Box<dyn Error>> {
@@ -60,13 +65,14 @@ pub async fn stop(name: &str) -> Result<(), Box<dyn Error>> {
         let status = api::machines::stop(machine.id).await?;
 
         if status.success == 1 {
-            cli::ok(&format!(" {}", status.status));
+            cli::ok(&status.status);
+            cli::info("It might be some time for the machine to be deassigned from you");
+
+            Ok(())
         } else {
-            cli::error(&format!(" {}", status.status));
+            Err(HtbError::boxed(status.status))
         }
     } else {
-        cli::error("No machine was found by that name");
+        Err(HtbError::boxed("No machine was found by that name"))
     }
-
-    Ok(())
 }

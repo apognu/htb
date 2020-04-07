@@ -1,4 +1,4 @@
-use crate::{api, cli};
+use crate::api::{self, HtbError};
 use chrono::prelude::*;
 use colored::*;
 use std::error::Error;
@@ -90,9 +90,9 @@ pub async fn show(name: &str) -> Result<(), Box<dyn Error>> {
                 user.time.dimmed()
             );
         }
-    } else {
-        cli::error("No machine was found by that name");
-    }
 
-    Ok(())
+        Ok(())
+    } else {
+        Err(HtbError::boxed("No machine was found by that name"))
+    }
 }
