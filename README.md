@@ -28,16 +28,16 @@ Also, the output can be sorted by `id`, `name`, `rating` or `release` date by pr
 ```shell
 $ htb machines list --owned --retired
 NAME      | OS      | USER     | ROOT     | IP ADDRESS   | RATING | POINTS
-Lame      | Linux   | 👥 15430 | ＃ 16559 | 10.10.10.3   | ☆ 4.3  | 🞋 20
-Legacy    | Windows | 👥 12370 | ＃ 12860 | 10.10.10.4   | ☆ 4.2  | 🞋 20
-Devel     | Windows | 👥 10626 | ＃ 11128 | 10.10.10.5   | ☆ 4.0  | 🞋 20
-Beep      | Linux   | 👥 7212  | ＃ 7606  | 10.10.10.7   | ☆ 4.7  | 🞋 20
-Optimum   | Windows | 👥 11634 | ＃ 7446  | 10.10.10.8   | ☆ 4.7  | 🞋 20
-Grandpa   | Windows | 👥 5104  | ＃ 5257  | 10.10.10.14  | ☆ 3.8  | 🞋 20
-Granny    | Windows | 👥 4365  | ＃ 4523  | 10.10.10.15  | ☆ 3.2  | 🞋 20
-Blocky    | Linux   | 👥 4322  | ＃ 4312  | 10.10.10.37  | ☆ 4.7  | 🞋 20
-Blue      | Windows | 👥 12210 | ＃ 12634 | 10.10.10.40  | ☆ 4.5  | 🞋 20
-Mirai     | Linux   | 👥 7235  | ＃ 6858  | 10.10.10.48  | ☆ 4.2  | 🞋 20
+Lame      | Linux   | 👤 15430 | ＃ 16559 | 10.10.10.3   | ★ 4.3  | 🞋 20
+Legacy    | Windows | 👤 12370 | ＃ 12860 | 10.10.10.4   | ★ 4.2  | 🞋 20
+Devel     | Windows | 👤 10626 | ＃ 11128 | 10.10.10.5   | ★ 4.0  | 🞋 20
+Beep      | Linux   | 👤 7212  | ＃ 7606  | 10.10.10.7   | ★ 4.7  | 🞋 20
+Optimum   | Windows | 👤 11634 | ＃ 7446  | 10.10.10.8   | ★ 4.7  | 🞋 20
+Grandpa   | Windows | 👤 5104  | ＃ 5257  | 10.10.10.14  | ★ 3.8  | 🞋 20
+Granny    | Windows | 👤 4365  | ＃ 4523  | 10.10.10.15  | ★ 3.2  | 🞋 20
+Blocky    | Linux   | 👤 4322  | ＃ 4312  | 10.10.10.37  | ★ 4.7  | 🞋 20
+Blue      | Windows | 👤 12210 | ＃ 12634 | 10.10.10.40  | ★ 4.5  | 🞋 20
+Mirai     | Linux   | 👤 7235  | ＃ 6858  | 10.10.10.48  | ★ 4.2  | 🞋 20
 [...]
 ```
 
@@ -47,14 +47,14 @@ Mirai     | Linux   | 👥 7235  | ＃ 6858  | 10.10.10.48  | ☆ 4.2  | 🞋 20
 $ htb machines show registry
 Registry
 ■■■■■■■■■■■■■■■■■■■■ ★ 4.5
-Hard 💻 Linux - 🞋 40 - 👥 3657 - ＃ 2968
+Hard 💻 Linux - 🞋 40 - 👤 3657 - ＃ 2968
 
 Made by thek
 Released on 19 Oct 2019
 IP address: 10.10.10.159
 
 First bloods:
-  👥 InfoSecJack in 00 days, 03 hours, 28 mins, 17 seconds
+  👤 InfoSecJack in 00 days, 03 hours, 28 mins, 17 seconds
   ＃ jkr in 00 days, 04 hours, 26 mins, 08 seconds
 ```
 
@@ -98,7 +98,6 @@ $ htb machines reset mirai
 $ htb chat list
 💬 user1 (123)
    user1: Why?
-
 💬 user2 (456)
    You: Did you start ForwardSlash?
 ```
@@ -107,20 +106,11 @@ $ htb chat list
 
 ```shell
 $ htb chat show 123
-👥 user1 (Pro Hacker) - 03:27am
-   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-
-👥 user1 (Pro Hacker) - 03:35am
-   Ut vulputate sit amet neque et aliquam. Vestibulum ac interdum dui, eu placerat lectus. Phasellus in risus velit.
-
-👥 user1 (Pro Hacker) - 03:36am
-   :sweat_smile:
-
-👥 apognu (Pro Hacker) - 01:39pm
-   Vestibulum sollicitudin ullamcorper neque non pharetra. Integer at ipsum ut mauris lobortis semper. Praesent ut erat ac ligula vehicula vulputate vitae at mauris.
-
-👥 apognu (Pro Hacker) - 01:40pm
-   Phasellus consequat mi eu augue aliquam placerat.
+03:27am user1: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+03:35am user1: Ut vulputate sit amet neque et aliquam. Vestibulum ac interdum dui, eu placerat lectus. Phasellus in risus velit.
+03:36am user1: :sweat_smile:
+01:39pm apognu: Vestibulum sollicitudin ullamcorper neque non pharetra. Integer at ipsum ut mauris lobortis semper. Praesent ut erat ac ligula vehicula vulputate vitae at mauris.
+01:40pm apognu: Phasellus consequat mi eu augue aliquam placerat.
 ```
 
 ### Open an interactive shell to a chat

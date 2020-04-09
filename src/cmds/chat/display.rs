@@ -14,9 +14,8 @@ pub async fn list() -> Result<(), Box<dyn Error>> {
         );
         println!(
             "   {}",
-            util::decode_message(&conversation.lastmessage.dimmed())
+            util::decode_message(&conversation.lastmessage).dimmed()
         );
-        println!();
     }
 
     Ok(())
@@ -27,13 +26,11 @@ pub async fn show(id: u64) -> Result<(), Box<dyn Error>> {
 
     for message in &messages {
         println!(
-            "👥 {} {} - {}",
+            "{} {}: {}",
+            message.time.dimmed(),
             message.username.bold(),
-            format!("({})", message.rank).dimmed(),
-            message.time
+            util::decode_message(&message.text)
         );
-        println!("   {}", util::decode_message(&message.text));
-        println!();
     }
 
     Ok(())
