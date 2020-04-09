@@ -16,6 +16,8 @@ pub struct Arguments {
 
 #[derive(Debug, Clap)]
 pub enum Subcommand {
+    #[clap(name = "info", about = "Get information about your account")]
+    Info(Info),
     #[clap(name = "config", about = "Configure htb")]
     Config(Config),
     #[clap(
@@ -35,6 +37,12 @@ pub enum Config {
         #[clap(name = "TOKEN", help = "Your API key from your account page")]
         token: String,
     },
+}
+
+#[derive(Debug, Clap)]
+pub enum Info {
+    #[clap(name = "status", about = "a")]
+    Status,
 }
 
 #[derive(Debug, Clap)]

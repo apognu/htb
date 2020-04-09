@@ -1,4 +1,7 @@
-use super::util::{int_or_string, HtbParser, HtbResponder};
+use super::{
+    deserializers::int_or_string,
+    util::{HtbParser, HtbResponder},
+};
 use serde::{Deserialize, Serialize};
 use std::{collections::HashMap, error::Error};
 

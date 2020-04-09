@@ -1,4 +1,6 @@
 pub mod chat;
+mod deserializers;
+pub mod info;
 pub mod machines;
 mod util;
 

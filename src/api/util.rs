@@ -1,5 +1,5 @@
 use reqwest::{Error as ReqwestError, Response, StatusCode};
-use serde::{de::DeserializeOwned, de::Visitor, Deserializer};
+use serde::de::DeserializeOwned;
 use std::{
     error::Error,
     fmt::{self, Display, Formatter},
@@ -80,41 +80,7 @@ impl HtbParser for Response {
     {
         match self.json().await {
             Ok(data) => Ok(data),
-            Err(_) => Err(HtbError::new("plop")),
+            Err(_) => Err(HtbError::new("Could not parse response from server")),
         }
     }
-}
-
-struct StateSuccessVisitor;
-
-impl<'de> Visitor<'de> for StateSuccessVisitor {
-    type Value = u8;
-
-    fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
-        formatter.write_str("unsigned integer or string")
-    }
-
-    fn visit_u64<E>(self, value: u64) -> Result<Self::Value, E>
-    where
-        E: serde::de::Error,
-    {
-        Ok(value as u8)
-    }
-
-    fn visit_str<E>(self, value: &str) -> Result<Self::Value, E>
-    where
-        E: serde::de::Error,
-    {
-        match value.parse::<u8>() {
-            Ok(value) => self.visit_u8(value),
-            Err(_) => Err(E::custom("failed to parse integer")),
-        }
-    }
-}
-
-pub(super) fn int_or_string<'de, D>(deserializer: D) -> Result<u8, D::Error>
-where
-    D: Deserializer<'de>,
-{
-    deserializer.deserialize_any(StateSuccessVisitor)
 }

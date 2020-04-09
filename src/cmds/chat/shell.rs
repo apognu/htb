@@ -16,6 +16,7 @@ use std::{
     time::Duration,
 };
 use termion::{cursor::DetectCursorPos, raw::IntoRawMode};
+use tokio::time::delay_for;
 
 pub async fn open(id: u64) -> Result<(), Box<dyn Error>> {
     cli::ok("Chat session started");
@@ -54,9 +55,10 @@ pub async fn open(id: u64) -> Result<(), Box<dyn Error>> {
         let w = Arc::clone(&rl);
 
         tokio::spawn(async move {
-            tokio::time::delay_for(Duration::from_secs(10)).await;
-
-            print_all_messages(&conversation, &last_seen_id, &w, false).await;
+            loop {
+                delay_for(Duration::from_secs(10)).await;
+                print_all_messages(&conversation, &last_seen_id, &w, false).await;
+            }
         });
     }
 
@@ -70,14 +72,18 @@ pub async fn open(id: u64) -> Result<(), Box<dyn Error>> {
                     stdout.cursor_pos().unwrap()
                 };
 
+                let message = line.trim();
+
+                if message.is_empty() {
+                    continue;
+                }
+
                 println!(
                     "{}{}{}",
                     termion::cursor::Goto(1, x - 1),
                     termion::clear::UntilNewline,
                     termion::cursor::Goto(1, x - 2)
                 );
-
-                let message = line.trim().as_ref();
 
                 match message {
                     "/quit" => break,

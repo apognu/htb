@@ -22,6 +22,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
     let options = args::parse();
 
     let result = match options.subcommand {
+        Info(ref sc) => cmds::info::parse(sc).await,
         Config(ref sc) => cmds::config::parse(sc).await,
         Machines(ref sc) => cmds::machines::parse(sc).await,
         Chat(ref sc) => cmds::chat::parse(sc).await,
